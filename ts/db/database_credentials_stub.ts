@@ -1,0 +1,6 @@
+export enum DBCredentials  {
+    HOST = "<DATABASE_HOST>",
+    USERNAME = "<DATABASE_USERNAME>",
+    PASSWORD = "<DATABASE_PASSWORD>",
+    DATABASE = "<DATABASE_NAME>"
+}

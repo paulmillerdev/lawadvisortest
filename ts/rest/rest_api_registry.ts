@@ -1,8 +1,10 @@
 import { API } from "./interface/rest_api_interface";
-import { Register } from "./api/post/register/rest_api_post_register";
+import { RegisterAPI } from "./api/post/rest_api_post_register";
+import { LoginAPI } from "./api/post/rest_api_post_login";
 
 export class APIRegistry {
     static apis: API[] = [
-        new Register()
+        new RegisterAPI(),
+        new LoginAPI()
     ];
 }
