@@ -1,10 +1,5 @@
 import { Database, DBResponse, DBResponseCode } from "./database";
 
-export enum DBManagerStatus {
-    SUCCESS,
-    FAIL
-}
-
 export class DBManager {
 
     private static encrypt(password: string): string {
