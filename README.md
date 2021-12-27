@@ -22,7 +22,7 @@ Setup a project with your programming language of choice and create an API for m
 - I used my own mysql db but did not include the connection details for obvious reasons (update /ts/db/database_credentials.ts)
 - Project deploys to localhost:3000 (didn't bother setting up a conf file for this)
 ## Testing
-- You can test a deployed version in [my site](code.benndl.com:3000)
+- You can test a deployed version in [my site](http://code.benndl.com:3000)
 - Send POST requests only (via Postman or your preferred tool); refer to API documentation below
 - Project is daemonized but just in case it isn't running, send me a message so I can check and start it up
 ## API documentation a.k.a. payload descrptions
