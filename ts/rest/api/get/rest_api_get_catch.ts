@@ -2,14 +2,14 @@ import { API } from "../../interface/rest_api_interface";
 import { Callback } from "../../interface/rest_api_callback_interface";
 import { ExpressMethod, ExpressRequest, ExpressResponse } from "../../../adapter/express";
 
-export class POSTCatchAPI implements API {
-    httpMethod: ExpressMethod = ExpressMethod.POST;
+export class GETCatchAPI implements API {
+    httpMethod: ExpressMethod = ExpressMethod.GET;
     path: string = "*";
 
     getCallback(): Callback {
         return async (request: ExpressRequest, response: ExpressResponse) => {
             response.send({
-                message: 'Invalid API request.'
+                message: 'Only POST requests are handled by the app.'
             })
         };
     }

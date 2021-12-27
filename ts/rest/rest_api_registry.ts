@@ -6,7 +6,8 @@ import { TaskAddAPI } from "./api/post/task/rest_api_post_task_add";
 import { TaskUpdateAPI } from "./api/post/task/rest_api_post_task_update";
 import { TaskRemoveAPI } from "./api/post/task/rest_api_post_task_remove";
 import { TaskReorderAPI } from "./api/post/task/rest_api_post_task_reorder";
-import { CatchAPI } from "./api/post/rest_api_post_catch";
+import { POSTCatchAPI } from "./api/post/rest_api_post_catch";
+import { GETCatchAPI } from "./api/get/rest_api_get_catch";
 
 export class APIRegistry {
     static apis: API[] = [
@@ -17,6 +18,7 @@ export class APIRegistry {
         new TaskUpdateAPI(),
         new TaskRemoveAPI(),
         new TaskReorderAPI(),
-        new CatchAPI()
+        new POSTCatchAPI(),
+        new GETCatchAPI()
     ];
 }
