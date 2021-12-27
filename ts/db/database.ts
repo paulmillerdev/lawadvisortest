@@ -4,7 +4,7 @@ import { DBCredentials } from "./database_credentials"; // COMMENT THIS, UNCOMME
 
 export type DBResponse = {
     code: string;
-    response?: any[];
+    response: any[];
     message?: string;
 }
 
@@ -29,7 +29,8 @@ export class Database {
 
     static async query(query: string): Promise<DBResponse> {
         let dbResponse: DBResponse = {
-            code: ''
+            code: '',
+            response: []
         };
 
         try {
