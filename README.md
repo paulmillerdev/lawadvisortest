@@ -30,31 +30,31 @@ Setup a project with your programming language of choice and create an API for m
 #### /user/register
 ```
 {
-    "username": "USERNAME",
-    "password": "PASSWORD"
+    "username": "USERNAME (string)",
+    "password": "PASSWORD (string)"
 }
 ```
 #### /user/login
 ```
 {
-    "username": "USERNAME",
-    "password": "PASSWORD"
+    "username": "USERNAME (string)",
+    "password": "PASSWORD (string)"
 }
 ```
 ### /task
 #### /task/list
 ```
 {
-    "token": "TOKEN_FROM_LOGIN"
+    "token": "TOKEN_FROM_LOGIN (string)"
 }
 ```
 #### /task/add
 ```
 {
-    "token": "TOKEN_FROM_LOGIN",
+    "token": "TOKEN_FROM_LOGIN (string)",
     "task": {
-        "title": "TITLE",
-        "details": "DETAILS"
+        "title": "TITLE (string)",
+        "details": "DETAILS (string)"
     }
 }
 ```
@@ -62,11 +62,11 @@ Setup a project with your programming language of choice and create an API for m
 #### /task/update
 ```
 {
-    "token": "TOKEN_FROM_LOGIN",
+    "token": "TOKEN_FROM_LOGIN (string)",
     "task": {
-        "id": "TASK_ID",
-        "title": "TITLE",
-        "details": "DETAILS"
+        "id": "TASK_ID (number)",
+        "title": "TITLE (string)",
+        "details": "DETAILS (string)"
     }
 }
 ```
@@ -74,9 +74,9 @@ Setup a project with your programming language of choice and create an API for m
 #### /task/remove
 ```
 {
-    "token": "TOKEN_FROM_LOGIN",
+    "token": "TOKEN_FROM_LOGIN (string)",
     "task": {
-        "id": "TASK_ID"
+        "id": "TASK_ID (number)"
     }
 }
 ```
@@ -84,10 +84,10 @@ Setup a project with your programming language of choice and create an API for m
 #### /task/reorder
 ```
 {
-    "token": "TOKEN_FROM_LOGIN",
+    "token": "TOKEN_FROM_LOGIN (string)",
     "task": {
-        "id": "TASK_ID",
-        "order": "NEW_ORDER"
+        "id": "TASK_ID (number)",
+        "order": "NEW_ORDER (number)"
     }
 }
 ```
