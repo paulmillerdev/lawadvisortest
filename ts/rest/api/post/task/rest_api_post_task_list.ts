@@ -2,6 +2,8 @@ import { API } from "../../../interface/rest_api_interface";
 import { Callback } from "../../../interface/rest_api_callback_interface";
 import { ExpressMethod, ExpressRequest, ExpressResponse } from "../../../../adapter/express";
 import { DBManager } from "../../../../db/database_manager";
+import { Util } from "../../../../util/util";
+import { HTTPStatusCode } from "../../../../util/http_code";
 
 type TaskListPayload = {
     token: string
@@ -13,17 +15,16 @@ export class TaskListAPI implements API {
 
     isPayloadValid(obj: any): obj is TaskListPayload {
         return (
-            obj.token !== undefined
+            Util.isMemberValid(obj.token, Util.isString)
         );
     }
 
     getCallback(): Callback {
         return async (request: ExpressRequest, response: ExpressResponse) => {
             if (!this.isPayloadValid(request.body)) {
-                response.send({
+                return response.status(HTTPStatusCode.BAD_REQUEST).send({
                     message: 'Invalid input. Please refer to the documentation.'
                 });
-                return;
             }
 
             const { token } = <TaskListPayload> request.body;
@@ -39,11 +40,11 @@ export class TaskListAPI implements API {
                         order: task.task_order
                     };
                 });
-                response.send({
+                response.status(HTTPStatusCode.OK).send({
                     task : taskList
                 });
             } else {
-                response.send({
+                response.status(HTTPStatusCode.UNAUTHORIZED).send({
                     message: 'Invalid access token.'
                 });
             }

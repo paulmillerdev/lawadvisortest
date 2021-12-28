@@ -22,13 +22,14 @@ export class DBManager {
     static async loginUser(username: string, password: string): Promise<string> {
         const sqlQuery: string = `select user_id from la_user where user_name="${username}" and user_pass=${this.encrypt(password)}`;
         const dbResponse: DBResponse = await Database.query(sqlQuery);
+        const defaultVal: string = "";
 
         if (dbResponse.code == DBResponseCode.OK) {
             let [ row ] = dbResponse.response;
-            return row.user_id;
+            return row ? row.user_id : defaultVal;
         }
         console.error(dbResponse);
-        return "";
+        return defaultVal;
     }
 
     static async registerAccessToken(userId: string, timestamp: number): Promise<boolean> {
@@ -45,25 +46,27 @@ export class DBManager {
     static async getAccessToken(userId: string, timestamp: number): Promise<string> {
         const sqlQuery: string = `select token_value from la_token where user_id="${userId}" and token_timestamp="${timestamp}"`;
         const dbResponse: DBResponse = await Database.query(sqlQuery);
+        const defaultVal: string = "";
 
         if (dbResponse.code == DBResponseCode.OK) {
             let [ row ] = dbResponse.response;
-            return row.token_value;
+            return row ? row.token_value : defaultVal;
         }
         console.error(dbResponse);
-        return "";
+        return defaultVal;
     }
 
     static async getTokenUserId(token: string): Promise<string> {
         const sqlQuery: string = `select user_id from la_token where token_value="${token}"`;
         const dbResponse: DBResponse = await Database.query(sqlQuery);
         const [ row ] = DBResponseCode.OK ? dbResponse.response : [];
+        const defaultVal: string = "";
 
         if (row) {
-            return row.user_id;
+            return row ? row.user_id : defaultVal;
         }
         console.error(dbResponse);
-        return "";
+        return defaultVal;
     }
 
     static async getTaskList(userId: string): Promise<any[]>{
@@ -91,13 +94,14 @@ export class DBManager {
     static async getMaxTaskOrder(userId: string): Promise<number> {
         const sqlQuery: string = `select max(task_order) as max_order from la_task where user_id="${userId}"`;
         const dbResponse: DBResponse = await Database.query(sqlQuery);
+        const defaultVal: number = 0;
 
         if (dbResponse.code == DBResponseCode.OK) {
             const [ row ] = dbResponse.response;
-            return row.max_order ? row.max_order : 0;
+            return row ? row.max_order : defaultVal;
         }
         console.error(dbResponse);
-        return 0;
+        return defaultVal;
     }
 
     static async updateTask(userId: string, taskId: string, title: string, details: string): Promise<boolean> {
@@ -136,13 +140,14 @@ export class DBManager {
     static async getTaskOrder(userId: string, taskId: string): Promise<number> {
         const sqlQuery: string = `select task_order from la_task where task_id="${taskId}" and user_id="${userId}"`;
         const dbResponse: DBResponse = await Database.query(sqlQuery);
+        const defaultVal: number = 0;
 
         if (dbResponse.code == DBResponseCode.OK) {
             const [ row ] = dbResponse.response;
-            return row.task_order ? row.task_order : 0;
+            return row ? row.task_order : defaultVal;
         }
         console.error(dbResponse);
-        return 0;
+        return defaultVal;
     }
 
     static async moveTasksUp(userId: string, fromOrder: number, toOrder?: number): Promise<boolean> {

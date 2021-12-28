@@ -2,6 +2,8 @@ import { API } from "../../../interface/rest_api_interface";
 import { Callback } from "../../../interface/rest_api_callback_interface";
 import { ExpressMethod, ExpressRequest, ExpressResponse } from "../../../../adapter/express";
 import { DBManager } from "../../../../db/database_manager";
+import { Util } from "../../../../util/util";
+import { HTTPStatusCode } from "../../../../util/http_code";
 
 type LoginPayload = {
     username: string,
@@ -14,18 +16,17 @@ export class UserLoginAPI implements API {
 
     isPayloadValid(obj: any): obj is LoginPayload {
         return (
-            obj.username !== undefined &&
-            obj.password !== undefined
+            Util.isMemberValid(obj.username, Util.isString) &&
+            Util.isMemberValid(obj.password, Util.isString)
         );
     }
 
     getCallback(): Callback {
         return async (request: ExpressRequest, response: ExpressResponse) => {
             if (!this.isPayloadValid(request.body)) {
-                response.send({
+                return response.status(HTTPStatusCode.BAD_REQUEST).send({
                     message: 'Invalid input. Please refer to the documentation.'
                 });
-                return;
             }
 
             const { username, password } = <LoginPayload> request.body;
@@ -33,11 +34,11 @@ export class UserLoginAPI implements API {
             let token: string = userId !== "" ? await this.getToken(userId) : "";
 
             if (userId !== "" && token !== "") {
-                response.send({
+                response.status(HTTPStatusCode.OK).send({
                     token
                 });
             } else {
-                response.send({
+                response.status(HTTPStatusCode.UNAUTHORIZED).send({
                     message: 'User login failed. One or both of the credentials provided was invalid.'
                 });
             }

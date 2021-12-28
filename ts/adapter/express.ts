@@ -1,4 +1,5 @@
 import express from 'express';
+import { HTTPStatusCode } from "../util/http_code";
 
 export enum ExpressMethod {
     GET = 'get',
@@ -12,7 +13,13 @@ export type ExpressRequest = {
 }
 
 export type ExpressResponse = {
+    status: Function;
     send: Function;
+    sendStatus: Function;
+}
+
+export type ExpressError = {
+    status: number;
 }
 
 export class Express {
@@ -26,6 +33,16 @@ export class Express {
 
     init(): void {
         this.app.use(this.express.json());
+        this.app.use((err: ExpressError, req: ExpressRequest, res: ExpressResponse, next: Function) => {
+            if (err instanceof SyntaxError && err.status === HTTPStatusCode.BAD_REQUEST && 'body' in err) {
+                console.error(err);
+                return res.status(HTTPStatusCode.BAD_REQUEST).send({
+                    message: "Bad request."
+                });
+            }
+        
+            next();
+        });
     }
 
     get(path: string, callback: Function): void {

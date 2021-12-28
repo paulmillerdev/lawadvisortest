@@ -2,6 +2,8 @@ import { API } from "../../../interface/rest_api_interface";
 import { Callback } from "../../../interface/rest_api_callback_interface";
 import { ExpressMethod, ExpressRequest, ExpressResponse } from "../../../../adapter/express";
 import { DBManager } from "../../../../db/database_manager";
+import { Util } from "../../../../util/util";
+import { HTTPStatusCode } from "../../../../util/http_code";
 
 type TaskReorderPayload = {
     token: string,
@@ -17,20 +19,19 @@ export class TaskReorderAPI implements API {
 
     isPayloadValid(obj: any): obj is TaskReorderPayload {
         return (
-            obj.token !== undefined &&
-            obj.task !== undefined &&
-                obj.task.id !== undefined &&
-                obj.task.order !== undefined
+            Util.isMemberValid(obj.token, Util.isString) &&
+            Util.isMemberValid(obj.task, Util.isObject) &&
+                Util.isMemberValid(obj.task.id, Util.isNumber) &&
+                Util.isMemberValid(obj.task.order, Util.isNumber)
         );
     }
 
     getCallback(): Callback {
         return async (request: ExpressRequest, response: ExpressResponse) => {
             if (!this.isPayloadValid(request.body)) {
-                response.send({
+                return response.status(HTTPStatusCode.BAD_REQUEST).send({
                     message: 'Invalid input. Please refer to the documentation.'
                 });
-                return;
             }
 
             const { token, task } = <TaskReorderPayload> request.body;
@@ -63,17 +64,17 @@ export class TaskReorderAPI implements API {
                     let updateStatus = await DBManager.updateTaskOrder(userId, id, newOrder);
 
                     if (updateStatus && moveStatus) {
-                        response.send({
+                        response.status(HTTPStatusCode.OK).send({
                             message: 'Reorder task successfull.'
                         });
                     } else {
-                        response.send({
+                        response.status(HTTPStatusCode.BAD_REQUEST).send({
                             message: 'Reorder task failed.'
                         });
                     }
                 }
             } else {
-                response.send({
+                response.status(HTTPStatusCode.UNAUTHORIZED).send({
                     message: 'Invalid access token.'
                 });
             }
